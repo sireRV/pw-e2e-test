@@ -17,24 +17,28 @@ test("Visit todo home page", async ({ homePage }) => {
   );
 });
 
-test("User inputs todo item", async ({ homePage }) => {
-  await homePage.addTodoItem("Buy Groceries");
-
-  await expect(homePage.element.newTodoField).toHaveText("");
-  await homePage.checkVisibility(
-    homePage.footerSection.element.itemCountElement,
+test("User inputs todo item", async ({ addOneToDo }) => {
+  await expect(addOneToDo.element.newTodoField).toHaveText("");
+  await addOneToDo.checkVisibility(
+    addOneToDo.footerSection.element.itemCountElement,
     true,
   );
-  await homePage.checkVisibility(homePage.footerSection.element.filters, true);
-  await homePage.checkVisibility(homePage.footerSection.element.filters, true);
-
-  await homePage.checkVisibility(
-    homePage.todoListSection.element.toggleAll,
+  await addOneToDo.checkVisibility(
+    addOneToDo.footerSection.element.filters,
+    true,
+  );
+  await addOneToDo.checkVisibility(
+    addOneToDo.footerSection.element.filters,
     true,
   );
 
-  await expect(homePage.footerSection.getItemCount()).toHaveText("1");
-  await homePage.footerSection.confirmFilterSelected("All");
+  await addOneToDo.checkVisibility(
+    addOneToDo.todoListSection.element.toggleAll,
+    true,
+  );
+
+  await expect(addOneToDo.footerSection.getItemCount()).toHaveText("1");
+  await addOneToDo.footerSection.confirmFilterSelected("All");
 });
 
 test("Toggle All marks all items complete", async ({ homePage }) => {
