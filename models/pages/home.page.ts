@@ -30,11 +30,16 @@ export default class HomePage {
     return this.page.url();
   }
 
-  public async inputTodo(input: string) {
+  public async addTodoItem(input: string) {
+    await this.element.newTodoField.fill(input);
+    await this.element.newTodoField.press("Enter");
+  }
+
+  private async inputTodo(input: string) {
     await this.element.newTodoField.fill(input);
   }
 
-  public async registerTodo() {
+  private async registerTodo() {
     await this.element.newTodoField.press("Enter");
   }
 

@@ -1,10 +1,7 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "../fixtures/my-fixture";
 import HomePage from "../models/pages/home.page";
 
-test("Visit todo home page", async ({ page }) => {
-  const homePage = new HomePage(page);
-  await homePage.goto();
-
+test("Visit todo home page", async ({ homePage }) => {
   expect(homePage.getUrl()).toEqual("https://demo.playwright.dev/todomvc/#/");
 
   await homePage.verifyText(homePage.element.heading, "todos");
@@ -20,15 +17,9 @@ test("Visit todo home page", async ({ page }) => {
   );
 });
 
-test("User inputs todo item", async ({ page }) => {
-  const homePage = new HomePage(page);
-  await homePage.goto();
+test("User inputs todo item", async ({ homePage }) => {
+  await homePage.addTodoItem("Buy Groceries");
 
-  await homePage.inputTodo("Buy Groceries");
-  await expect(await homePage.element.newTodoField.inputValue()).toBe(
-    "Buy Groceries",
-  );
-  await homePage.registerTodo();
   await expect(homePage.element.newTodoField).toHaveText("");
   await homePage.checkVisibility(
     homePage.footerSection.element.itemCountElement,
@@ -46,18 +37,12 @@ test("User inputs todo item", async ({ page }) => {
   await homePage.footerSection.confirmFilterSelected("All");
 });
 
-test("Toggle All marks all items complete", async ({ page }) => {
-  const homePage = new HomePage(page);
-  await homePage.goto();
+test("Toggle All marks all items complete", async ({ homePage }) => {
+  await homePage.addTodoItem("Buy Groceries");
 
-  await homePage.inputTodo("Buy Groceries");
-  await homePage.registerTodo();
+  await homePage.addTodoItem("Buy Tea");
 
-  await homePage.inputTodo("Buy Tea");
-  await homePage.registerTodo();
-
-  await homePage.inputTodo("Meet a friend");
-  await homePage.registerTodo();
+  await homePage.addTodoItem("Meet a friend");
 
   await expect(homePage.footerSection.getItemCount()).toHaveText("3");
 
