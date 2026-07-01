@@ -6,6 +6,7 @@ export default class FooterSection {
   element: {
     itemCountElement: Locator;
     filters: Locator;
+    clearCompletedButton: Locator;
   };
 
   constructor(page: Page) {
@@ -13,6 +14,7 @@ export default class FooterSection {
     this.element = {
       itemCountElement: this.page.locator(".todo-count"),
       filters: this.page.locator(".filters"),
+      clearCompletedButton: this.page.locator(".clear-completed"),
     };
   }
 
@@ -25,5 +27,9 @@ export default class FooterSection {
   public async confirmFilterSelected(text: string) {
     const filter = this.element.filters.locator(".selected");
     expect(filter).toHaveText(text);
+  }
+
+  public async clearCompletedItems() {
+    await this.element.clearCompletedButton.click();
   }
 }

@@ -30,4 +30,8 @@ export default class TodoListSection {
     const completedItemsList = this.element.todoList.locator("li.completed");
     return completedItemsList;
   }
+
+  public async toggleAllItems() {
+    await this.element.toggleAll.click();
+  }
 }
