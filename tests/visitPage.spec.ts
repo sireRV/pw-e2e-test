@@ -25,7 +25,6 @@ test("User inputs todo item", async ({ page }) => {
   await homePage.goto();
 
   await homePage.inputTodo("Buy Groceries");
-  console.log;
   await expect(await homePage.element.newTodoField.inputValue()).toBe(
     "Buy Groceries",
   );
@@ -45,4 +44,36 @@ test("User inputs todo item", async ({ page }) => {
 
   await expect(homePage.footerSection.getItemCount()).toHaveText("1");
   await homePage.footerSection.confirmFilterSelected("All");
+});
+
+test("Toggle All marks all items complete", async ({ page }) => {
+  const homePage = new HomePage(page);
+  await homePage.goto();
+
+  await homePage.inputTodo("Buy Groceries");
+  await homePage.registerTodo();
+
+  await homePage.inputTodo("Buy Tea");
+  await homePage.registerTodo();
+
+  await homePage.inputTodo("Meet a friend");
+  await homePage.registerTodo();
+
+  await expect(homePage.footerSection.getItemCount()).toHaveText("3");
+
+  await homePage.todoListSection.toggleAllItems();
+
+  await expect(homePage.footerSection.getItemCount()).toHaveText("0");
+
+  await expect(homePage.todoListSection.getCompletedItemsList()).toHaveCount(3);
+  await expect(homePage.todoListSection.getAllItemsList()).toHaveCount(3);
+  await expect(homePage.todoListSection.getActiveItemsList()).toHaveCount(0);
+
+  await homePage.todoListSection.toggleAllItems();
+
+  await expect(homePage.footerSection.getItemCount()).toHaveText("3");
+
+  await expect(homePage.todoListSection.getCompletedItemsList()).toHaveCount(0);
+  await expect(homePage.todoListSection.getAllItemsList()).toHaveCount(3);
+  await expect(homePage.todoListSection.getActiveItemsList()).toHaveCount(3);
 });
