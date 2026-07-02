@@ -65,4 +65,13 @@ test("Toggle All marks all items complete", async ({ homePage }) => {
   await expect(homePage.todoListSection.getCompletedItemsList()).toHaveCount(0);
   await expect(homePage.todoListSection.getAllItemsList()).toHaveCount(3);
   await expect(homePage.todoListSection.getActiveItemsList()).toHaveCount(3);
+
+  await homePage.todoListSection.removeTodoItem("Groceries");
+
+  await expect(
+    homePage.todoListSection.getAllItemsList().filter({ hasText: "Groceries" }),
+  ).toHaveCount(0);
+
+  await homePage.todoListSection.removeAllItems();
+  await expect(homePage.todoListSection.getAllItemsList()).toHaveCount(0);
 });
