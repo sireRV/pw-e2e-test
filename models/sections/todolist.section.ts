@@ -58,4 +58,9 @@ export default class TodoListSection {
       await topItem.locator(".destroy").click();
     }
   }
+
+  public async completeToDoItem(text: string) {
+    const todoItem = this.getTodoItem(text);
+    await todoItem.locator(".toggle").check();
+  }
 }
