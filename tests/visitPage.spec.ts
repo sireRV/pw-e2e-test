@@ -2,19 +2,32 @@ import { test, expect } from "../fixtures/my-fixture";
 import HomePage from "../models/pages/home.page";
 
 test("Visit todo home page", async ({ homePage }) => {
-  expect(homePage.getUrl()).toEqual("https://demo.playwright.dev/todomvc/#/");
+  await test.step("validate url is correct", async () => {
+    expect(homePage.getUrl()).toEqual("https://demo.playwright.dev/todomvc/#/");
+  });
 
-  await homePage.verifyText(homePage.element.heading, "todos");
-  await homePage.verifyText(homePage.element.newTodoField, "");
-  await homePage.checkVisibility(
-    homePage.footerSection.element.itemCountElement,
-    false,
-  );
-  await homePage.checkVisibility(homePage.footerSection.element.filters, false);
-  await homePage.checkVisibility(
-    homePage.todoListSection.element.toggleAll,
-    false,
-  );
+  await test.step("validate heading and todo text field is empty", async () => {
+    await homePage.verifyText(homePage.element.heading, "todos");
+    await homePage.verifyText(homePage.element.newTodoField, "");
+  });
+
+  await test.step("validate contents of footer section", async () => {
+    await homePage.checkVisibility(
+      homePage.footerSection.element.itemCountElement,
+      false,
+    );
+    await homePage.checkVisibility(
+      homePage.footerSection.element.filters,
+      false,
+    );
+  });
+
+  await test.step("validate contents of footer section", async () => {
+    await homePage.checkVisibility(
+      homePage.todoListSection.element.toggleAll,
+      false,
+    );
+  });
 });
 
 test("User inputs todo item", async ({ addOneToDo }) => {
